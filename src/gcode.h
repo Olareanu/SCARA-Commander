@@ -1,5 +1,5 @@
 /**
- * Main Firmware Entry point
+ * Gcode parser
  *
  * SCARA-Commander software
  * Copyright (c) 2021 Olărenu Alexandru
@@ -19,27 +19,18 @@
  *
  */
 
-#include <Arduino.h>
-#include "MY_F411_HAL.h"
-#include "protocol.h"
-#include "Config.h"
 
-void setup() {
-    initPins();
-    initSerial();
-    if(digitalRead(RESET_ABORT_PIN == 0)){
-        Serial.println("No Power");
-    }
-    initDrivers();
+/**
+ * @brief Extracts a floating point value from a string. Taken from Grbl. Helper method.
+ * @param line
+ * @param char_counter
+ * @param float_ptr
+ * @return true if successfully, otherwise false
+ */
+bool read_float(char *line, uint8_t *char_counter, float *float_ptr);
 
-    Serial.println("SCARA-commander initialised.");
-    // Serial.println("Grbl 1.0");      //sequence to trick Universal Gcode Sender it's talking to GRBL
-    sendOkStatus();
-
-    protocol_main_loop();
-    /* Never get here */
-}
-
-void loop() {
-    /* Never get here */
-}
+/**
+ * @brief interprets a gcode line and sends it to execution
+ * @param line
+ */
+void gc_execute_line(char *line);

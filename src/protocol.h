@@ -1,5 +1,5 @@
 /**
- * Main Firmware Entry point
+ * protocol of the firmware
  *
  * SCARA-Commander software
  * Copyright (c) 2021 Olărenu Alexandru
@@ -19,27 +19,29 @@
  *
  */
 
-#include <Arduino.h>
-#include "MY_F411_HAL.h"
-#include "protocol.h"
-#include "Config.h"
+/**
+ * @brief protocol when in alarm state
+ */
+void alarmProtocol();
 
-void setup() {
-    initPins();
-    initSerial();
-    if(digitalRead(RESET_ABORT_PIN == 0)){
-        Serial.println("No Power");
-    }
-    initDrivers();
+/**
+ * @brief protocol when in alarm state
+ * @param message
+ */
+void alarmProtocol(const char message[]);
 
-    Serial.println("SCARA-commander initialised.");
-    // Serial.println("Grbl 1.0");      //sequence to trick Universal Gcode Sender it's talking to GRBL
-    sendOkStatus();
+/**
+ * @brief main protocol loop
+ */
+void protocol_main_loop();
 
-    protocol_main_loop();
-    /* Never get here */
-}
+/**
+ * Executes real time commands. Call as often as possible to ensure proper execution of movements
+ */
+void protocol_execute_realtime();
 
-void loop() {
-    /* Never get here */
-}
+/**
+ * @brief executes a gcode lineToExecute
+ * @param lineToExecute
+ */
+void protocol_execute_line(char *lineToExecute);

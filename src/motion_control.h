@@ -1,5 +1,5 @@
 /**
- * Main Firmware Entry point
+ * Motion Controller
  *
  * SCARA-Commander software
  * Copyright (c) 2021 Olărenu Alexandru
@@ -19,27 +19,31 @@
  *
  */
 
-#include <Arduino.h>
-#include "MY_F411_HAL.h"
-#include "protocol.h"
-#include "Config.h"
+/**
+ * @brief G28 gcode command = auto home
+ */
+void g28();
 
-void setup() {
-    initPins();
-    initSerial();
-    if(digitalRead(RESET_ABORT_PIN == 0)){
-        Serial.println("No Power");
-    }
-    initDrivers();
+/**
+ * @brief G0 gcode command in polar coordinates = rapid positioning
+ * @param ab
+ */
+void g0Polar(float ab[2]);
 
-    Serial.println("SCARA-commander initialised.");
-    // Serial.println("Grbl 1.0");      //sequence to trick Universal Gcode Sender it's talking to GRBL
-    sendOkStatus();
+/**
+ * @brief G0 gcode command in cartesian coordinates = rapid positioning
+ * @param ab
+ */
+void g0Cartesian(float *ab);
 
-    protocol_main_loop();
-    /* Never get here */
-}
+/**
+ * @brief G1 gcode command in polar coordinates = linear motion
+ * @param ab
+ */
+void g1Polar(float ab[2], float f);
 
-void loop() {
-    /* Never get here */
-}
+/**
+ * @brief G1 gcode command in cartesian coordinates = linear motion
+ * @param ab
+ */
+void g1Cartesian(float *ab, float f);
